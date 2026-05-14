@@ -59,4 +59,10 @@ set(CPACK_RPM_PACKAGE_LICENSE "MIT")
 set(CPACK_RPM_PACKAGE_GROUP "Applications/Productivity")
 set(CPACK_RPM_PACKAGE_REQUIRES "ncurses")
 
+# NSIS specific
+set(CPACK_NSIS_DISPLAY_NAME "Todo")
+set(CPACK_NSIS_PACKAGE_NAME "Todo")
+set(CPACK_NSIS_INSTALL_ROOT "C:\\\\Program Files")
+set(CPACK_NSIS_MODIFY_PATH ON)
+
 include(CPack)
