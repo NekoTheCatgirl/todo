@@ -10,8 +10,6 @@ set(CMAKE_C_STANDARD 23)
 include(FetchContent)
 
 if(WIN32)
-	# Why do i do this you may ask? Windows is bullshit, and doesnt have good library support out of the box.
-	# Thus this bullshit is required. Fuck you windows.
 	FetchContent_Declare(
 			pdcurses
 			GIT_REPOSITORY https://github.com/wmcbrine/PDCurses.git
