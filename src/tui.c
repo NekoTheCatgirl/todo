@@ -79,11 +79,84 @@ static void add_entry(todo_list_t *list) {
 	char name[256]        = {0};
 	char description[256] = {0};
 
-	clear();
-	mvprintw(0, 0, "=== New Entry === (ESC to cancel)");
+	const int width = 50;
+	const int height = 8;
+	const int start_y = (LINES - height) / 2;
+	const int start_x = (COLS - width) / 2;
 
-	if (!read_string(2, 0, "Name:        ", name, sizeof(name)))        return;
-	if (!read_string(3, 0, "Description: ", description, sizeof(description))) return;
+	WINDOW *win = newwin(height, width, start_y, start_x);
+	keypad(win, TRUE);
+	box(win, 0, 0);
+	mvwprintw(win, 0, (width - 13) / 2, " New Entry ");
+	mvwprintw(win, height - 1, (width - 15) / 2, " ESC to cancel ");
+	wrefresh(win);
+
+	echo();
+	curs_set(1);
+
+	mvwprintw(win, 2, 2, "Name: ");
+	wrefresh(win);
+	int ch;
+	while (true) {
+		ch = wgetch(win);
+		if (ch == 27) { // ESC
+			delwin(win);
+			noecho();
+			curs_set(0);
+			return;
+		}
+		if (ch == '\n') break;
+		if (ch == KEY_BACKSPACE || ch == 127 || ch == KEY_LEFT) {
+			if (strlen(name) > 0) {
+				name[strlen(name) - 1] = '\0';
+				mvwprintw(win, 2, 8, "%s ", name);
+				wmove(win, 2, 8 + (int)strlen(name));
+			}
+		} else if (ch >= 32 && ch <= 126 && strlen(name) < sizeof(name) - 1) {
+			size_t len = strlen(name);
+			name[len] = (char)ch;
+			name[len + 1] = '\0';
+			mvwprintw(win, 2, 8, "%s", name);
+		}
+		wrefresh(win);
+	}
+
+	if (strlen(name) == 0) {
+		delwin(win);
+		noecho();
+		curs_set(0);
+		return;
+	}
+
+	mvwprintw(win, 4, 2, "Description: ");
+	wrefresh(win);
+	while (true) {
+		ch = wgetch(win);
+		if (ch == 27) { // ESC
+			delwin(win);
+			noecho();
+			curs_set(0);
+			return;
+		}
+		if (ch == '\n') break;
+		if (ch == KEY_BACKSPACE || ch == 127 || ch == KEY_LEFT) {
+			if (strlen(description) > 0) {
+				description[strlen(description) - 1] = '\0';
+				mvwprintw(win, 4, 15, "%s ", description);
+				wmove(win, 4, 15 + (int)strlen(description));
+			}
+		} else if (ch >= 32 && ch <= 126 && strlen(description) < sizeof(description) - 1) {
+			size_t len = strlen(description);
+			description[len] = (char)ch;
+			description[len + 1] = '\0';
+			mvwprintw(win, 4, 15, "%s", description);
+		}
+		wrefresh(win);
+	}
+
+	noecho();
+	curs_set(0);
+	delwin(win);
 
 	todo_list_add(list, name, description);
 }
@@ -112,10 +185,30 @@ void tui_run(todo_list_t* list) {
 				todo_list_toggle(list, selected);
 				break;
 
-			case 'd':
-				todo_list_remove(list, selected);
-				if (selected > 0 && selected >= todo_list_size(list)) selected--;
+			case 'd': {
+				if (todo_list_size(list) == 0) break;
+				const auto entry = todo_list_index(list, selected);
+				const char *name = todo_entry_name(entry);
+
+				const int width = (int)strlen(name) + 40;
+				const int height = 5;
+				const int start_y = (LINES - height) / 2;
+				const int start_x = (COLS - width) / 2;
+
+				WINDOW *win = newwin(height, width, start_y, start_x);
+				box(win, 0, 0);
+				mvwprintw(win, 2, 2, "Are you sure you want to delete %s? y/n", name);
+				wrefresh(win);
+
+				int confirm = wgetch(win);
+				if (confirm == 'y' || confirm == 'Y') {
+					todo_list_remove(list, selected);
+					if (selected > 0 && selected >= todo_list_size(list)) selected--;
+				}
+
+				delwin(win);
 				break;
+			}
 
 			case 'a':
 				add_entry(list);
