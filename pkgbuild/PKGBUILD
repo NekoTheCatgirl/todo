@@ -1,6 +1,6 @@
 # Maintainer: Thea Nicoline Flink <thea@nekothecatgirl.com>
 pkgname=todo
-pkgver=1.0.0
+pkgver=1.1.1
 pkgrel=1
 pkgdesc="A stupidly simple TUI todolist made in pure C using ncurses"
 arch=('x86_64')
@@ -8,7 +8,7 @@ license=('MIT')
 depends=('ncurses')
 makedepends=('cmake')
 source=("https://github.com/NekoTheCatgirl/todo/archive/refs/tags/v$pkgver.tar.gz")
-sha256sums=('9da6939fad774344a3e58d479402f2c2964f08260b234a6d495ed67ca9f990a3')
+sha256sums=('351f9e67a9ceb83f673e0302f6616c36948affee73fdefc1057d2873d994f3f0')
 
 build() {
     cd "$pkgname-$pkgver"
