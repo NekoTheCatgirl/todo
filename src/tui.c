@@ -1,10 +1,12 @@
+#include "tui.h"
+#include <string.h>
+#include "todo.h"
+
 #ifdef _WIN32
 	#include <curses.h>
 #else
 	#include <ncurses.h>
 #endif
-#include <string.h>
-#include <tui.h>
 
 #define STATUS_BAR "  [k/Up] Up  [j/Down] Down  [enter] Toggle  [a] Add  [d] Delete  [q] Quit"
 

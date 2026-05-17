@@ -6,6 +6,8 @@ typedef struct TodoEntry todo_entry_t;
 typedef struct TodoList todo_list_t;
 
 todo_list_t* todo_list_ctor(void);
+todo_list_t* todo_list_load(const char *path);
+bool todo_list_save(const todo_list_t *list, const char *path);
 size_t todo_list_size(const todo_list_t *list);
 todo_entry_t* todo_list_index(const todo_list_t *list, size_t index);
 void todo_list_add(todo_list_t *list, const char *name, const char *description);
