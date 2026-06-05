@@ -1,8 +1,10 @@
 #include "todo.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <json-c/json.h>
+
 #include "path_helper.h"
 
 #define INITIAL_CAPACITY 4

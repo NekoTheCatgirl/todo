@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.3)
+cmake_minimum_required(VERSION 4.0)
 project(todo
         VERSION 1.1.1
         DESCRIPTION "A stupidly simple TUI todolist made in pure C using ncurses"

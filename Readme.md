@@ -18,7 +18,7 @@ You can download pre-built binaries from the [GitHub Releases](https://github.co
 
 #### Prerequisites
 
-- CMake 4.3 or higher
+- CMake 4.0 or higher
 - A C compiler supporting C23
 - ncurses (Linux/Unix)
 
